@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\KinoController;
+use App\Http\Controllers\MvgController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::prefix("/mvg")->group(function () {
+    Route::get("/departures/{station}", [MvgController::class, "departures"])->where("station", "^de:\d+:\d+$");
+});
+
+Route::prefix("/kino")->group(function () {
+   Route::get("/", [KinoController::class, "index"]);
 });
