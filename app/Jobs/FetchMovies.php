@@ -3,13 +3,15 @@
 namespace App\Jobs;
 
 use App\Models\Movie;
-use Exception;
+use App\Models\MovieTime;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 
 class FetchMovies implements ShouldQueue
@@ -33,7 +35,10 @@ class FetchMovies implements ShouldQueue
         $json = $response->json();
 
 //        DB::transaction(function () use ($json) {
+        Schema::disableForeignKeyConstraints();
+        MovieTime::truncate();
         Movie::truncate();
+        Schema::enableForeignKeyConstraints();
         collect($json)->each(function ($item) {
             $movie = new Movie();
 
@@ -46,8 +51,15 @@ class FetchMovies implements ShouldQueue
             $movie->content = $item["Filminhalt"];
             $movie->coverUrl = $item["Img_Filmplakat"];
             $movie->trailerUrl = $item["URL_Trailer"];
+            $movie->unifilmUrl = $item["MD5_Rand"];
 
             $movie->save();
+
+            str($item["Termin_Uhrzeit"])
+                ->matchAll("/\d{1,2}:\d{2}/")
+                ->each(function ($match) use ($movie) {
+                    $movie->times()->create(["time" => $match]);
+                });
         });
 //        });
 
@@ -57,10 +69,10 @@ class FetchMovies implements ShouldQueue
             $filename = collect(explode("/", $coverUrl))->last();
 
             if (Storage::disk("public")->missing($path . $filename)) {
-                    $response = Http::get($coverUrl);
-                    Storage::disk("public")->put($path . $filename, $response->body());
+                $response = Http::get($coverUrl);
+                Storage::disk("public")->put($path . $filename, $response->body());
             }
-            if (Storage::disk("public")->exists($path.$filename)) {
+            if (Storage::disk("public")->exists($path . $filename)) {
                 $movie->coverUrl = asset("storage/kino/covers/" . $filename);
                 $movie->save();
             }

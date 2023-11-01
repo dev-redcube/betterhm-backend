@@ -5,6 +5,7 @@ namespace App\Models;
 use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\LazyCollection;
 
 /**
@@ -17,13 +18,16 @@ use Illuminate\Support\LazyCollection;
  * @property int $runtime
  * @property string $info
  * @property string $content
- * @property string $trailerUrl
  * @property string $coverUrl
+ * @property string $trailerUrl
+ * @property string $unifilmUrl
  *
  */
 class Movie extends Model
 {
     use HasFactory;
+
+    public $timestamps = false;
 
     protected $fillable = [
         "title",
@@ -35,9 +39,15 @@ class Movie extends Model
         "content",
         "coverUrl",
         "trailerUrl",
+        "unifilmUrl",
     ];
 
     protected $casts = [
         "date" => "datetime",
     ];
+
+    public function times(): HasMany
+    {
+        return $this->hasMany(MovieTime::class);
+    }
 }

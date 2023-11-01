@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\KinoController;
+use App\Http\Controllers\MovieController;
 use App\Http\Controllers\MvgController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +23,7 @@ Route::prefix("/mvg")->group(function () {
     Route::get("/departures/{station}", [MvgController::class, "departures"])->where("station", "^de:\d+:\d+$");
 });
 
-Route::prefix("/kino")->group(function () {
-   Route::get("/", [KinoController::class, "index"]);
+Route::prefix("/movies")->group(function () {
+    Route::get("/", [MovieController::class, "index"]);
+    Route::get("/{movie:title}", [MovieController::class, "show"]);
 });
