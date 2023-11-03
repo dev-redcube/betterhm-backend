@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: "mysql://root:secret@db:3306/betterhm"
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+#        condition: service_healthy
+#    command: "php artisan migrate"
+    networks:
+      - betterhm
+
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: betterhm
+    healthcheck:
+      test: "mysqladmin ping -h 127.0.0.1 --password=$$MYSQL_PASSWORD"
+      timeout: 2s
+    networks:
+      - betterhm
+
+networks:
+  betterhm:
+    driver: bridge
