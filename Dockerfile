@@ -2,7 +2,7 @@
 # This makes it easier if we want to install packages,
 # as we have to install them in multiple places.
 # This helps keep ou Dockerfiles DRY -> https://bit.ly/dry-code
-# You can see a list of required extensions for Laravel here: https://laravel.com/docs/8.x/deployment#server-requirements
+# You can see a list of required extensions for Laravel here: https://laravel.com/docs/10.x/deployment#server-requirements
 ARG PHP_EXTS="bcmath ctype fileinfo mbstring pdo pdo_mysql dom pcntl"
 ARG PHP_PECL_EXTS="redis"
 
@@ -68,7 +68,7 @@ COPY --from=composer_base /opt/apps/betterhm-backend /opt/apps/betterhm-backend
 WORKDIR /opt/apps/betterhm-backend
 
 # We want to install all the NPM packages,
-# and compile the MIX bundle for production
+# and compile the Vite bundle for production
 RUN npm install && \
     npm run build
 
@@ -87,7 +87,7 @@ WORKDIR /opt/apps/betterhm-backend
 
 # We need to install some requirements into our image,
 # used to compile our PHP extensions, as well as install all the extensions themselves.
-# You can see a list of required extensions for Laravel here: https://laravel.com/docs/8.x/deployment#server-requirements
+# You can see a list of required extensions for Laravel here: https://laravel.com/docs/10.x/deployment#server-requirements
 RUN apk add --virtual build-dependencies --no-cache ${PHPIZE_DEPS} openssl ca-certificates libxml2-dev oniguruma-dev && \
     docker-php-ext-install -j$(nproc) ${PHP_EXTS} && \
     pecl install ${PHP_PECL_EXTS} && \

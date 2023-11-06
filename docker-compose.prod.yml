@@ -54,8 +54,8 @@ services:
       target: frontend
     # Override the default CMD, so we can watch changes to frontend files, and re-transpile them.
     command: [ "npm", "run", "dev" ]
-    ports:
-      - '5173:5173'
+#    ports:
+#      - '5173:5173'
     image: ghcr.io/dev-redcube/betterhm-backend/frontend
     volumes:
       # Here we mount in our codebase so any changes are immediately reflected into the container
@@ -68,8 +68,8 @@ services:
       - betterhm-backend
   mysql:
     image: 'mysql:8.0'
-    ports:
-      - '${FORWARD_DB_PORT:-3306}:3306'
+#    ports:
+#      - '${FORWARD_DB_PORT:-3306}:3306'
     environment:
       MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
       MYSQL_DATABASE: '${DB_DATABASE}'
@@ -87,8 +87,8 @@ services:
 
   redis:
     image: 'redis:alpine'
-    ports:
-      - '${FORWARD_REDIS_PORT:-6379}:6379'
+#    ports:
+#      - '${FORWARD_REDIS_PORT:-6379}:6379'
     networks:
       - betterhm-backend
     healthcheck:
