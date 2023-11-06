@@ -1,31 +1,103 @@
-version: "3.9"
+version: '3.8'
 services:
-  app:
+  # We need to run the FPM container for our application
+  laravel-fpm:
     build:
       context: .
-      dockerfile: Dockerfile
+      target: fpm_server
+    image: ghcr.io/dev-redcube/betterhm-backend/fpm_server
+    # We can override any env values here.
+    # By default the .env in the project root will be loaded as the environment for all containers
     environment:
-      DATABASE_URL: "mysql://root:secret@db:3306/betterhm"
-    ports:
-      - "8080:80"
-    depends_on:
-      - db
-#        condition: service_healthy
-#    command: "php artisan migrate"
+      APP_DEBUG: "true"
+    # Mount the codebase, so any code changes we make will be propagated to the running application
+    volumes:
+      # Here we mount in our codebase so any changes are immediately reflected into the container
+      - '.:/opt/apps/betterhm-backend'
     networks:
-      - betterhm
+      - betterhm-backend
 
-  db:
-    image: mysql:latest
+  # Run the web server container for static content, and proxying to our FPM container
+  laravel-web:
+    build:
+      context: .
+      target: web_server
+    image: ghcr.io/dev-redcube/betterhm-backend/web_server
+    # Expose our application port (80) through a port on our local machine (8080)
+    ports:
+      - '8080:80'
     environment:
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: betterhm
-    healthcheck:
-      test: "mysqladmin ping -h 127.0.0.1 --password=$$MYSQL_PASSWORD"
-      timeout: 2s
+      # We need to pass in the new FPM hst as the name of the fpm container on port 9000
+      FPM_HOST: "laravel.fpm:9000"
+    # Mount the public directory into the container so we can serve any static files directly when they change
+    volumes:
+      # Here we mount in our codebase so any changes are immediately reflected into the container
+      - './public:/opt/apps/betterhm-backend/public'
     networks:
-      - betterhm
+      - betterhm-backend
+  # Run the Laravel Scheduler
+  laravel-cron:
+    build:
+      context: .
+      target: cron
+    image: ghcr.io/dev-redcube/betterhm-backend/cron
+    # Here we mount in our codebase so any changes are immediately reflected into the container
+    volumes:
+      # Here we mount in our codebase so any changes are immediately reflected into the container
+      - '.:/opt/apps/betterhm-backend'
+    networks:
+      - betterhm-backend
+  # Run the frontend, and file watcher in a container, so any changes are immediately compiled and servable
+  laravel-frontend:
+    build:
+      context: .
+      target: frontend
+    # Override the default CMD, so we can watch changes to frontend files, and re-transpile them.
+    command: [ "npm", "run", "dev" ]
+    ports:
+      - '5173:5173'
+    image: ghcr.io/dev-redcube/betterhm-backend/frontend
+    volumes:
+      # Here we mount in our codebase so any changes are immediately reflected into the container
+      - '.:/opt/apps/betterhm-backend'
+      # Add node_modeules as singular volume.
+      # This prevents our local node_modules from being propagated into the container,
+      # So the node_modules can be compiled for each of the different architectures (Local, Image)
+      - '/opt/app/node_modules/'
+    networks:
+      - betterhm-backend
+  mysql:
+    image: 'mysql:8.0'
+    ports:
+      - '${FORWARD_DB_PORT:-3306}:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_USER: '${DB_USERNAME}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    volumes:
+      - 'betterhm-backend-mysql:/var/lib/mysql'
+    networks:
+      - betterhm-backend
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}" ]
+      retries: 3
+      timeout: 5s
+
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - '${FORWARD_REDIS_PORT:-6379}:6379'
+    networks:
+      - betterhm-backend
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      retries: 3
+      timeout: 5s
 
 networks:
-  betterhm:
-    driver: bridge
+  betterhm-backend:
+
+volumes:
+  betterhm-backend-mysql:
