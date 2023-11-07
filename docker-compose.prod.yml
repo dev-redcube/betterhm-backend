@@ -3,9 +3,6 @@ services:
   laravel.fpm:
     image: ghcr.io/dev-redcube/betterhm-backend/fpm_server:latest
     env_file: .env
-      # volumes:
-    # Here we mount in our codebase so any changes are immediately reflected into the container
-    #   - '.:/opt/apps/betterhm-backend'
     networks:
       - betterhm-backend
 
@@ -56,8 +53,6 @@ services:
 
   redis:
     image: 'redis:alpine'
-    #    ports:
-    #      - '${FORWARD_REDIS_PORT:-6379}:6379'
     networks:
       - betterhm-backend
     healthcheck:
