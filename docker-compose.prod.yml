@@ -1,8 +1,9 @@
 version: '3.8'
 services:
   laravel.fpm:
-    image: ghcr.io/dev-redcube/betterhm-backend/fpm_server
-    # volumes:
+    image: ghcr.io/dev-redcube/betterhm-backend/fpm_server:latest
+    env_file: .env
+      # volumes:
       # Here we mount in our codebase so any changes are immediately reflected into the container
     #   - '.:/opt/apps/betterhm-backend'
     networks:
@@ -10,7 +11,8 @@ services:
 
   # Run the web server container for static content, and proxying to our FPM container
   laravel.web:
-    image: ghcr.io/dev-redcube/betterhm-backend/web_server
+    image: ghcr.io/dev-redcube/betterhm-backend/web_server:latest
+    env_file: .env
     ports:
       - '8080:80'
     environment:
@@ -20,13 +22,15 @@ services:
 
   # Run the Laravel Scheduler
   laravel.cron:
-    image: ghcr.io/dev-redcube/betterhm-backend/cron
+    image: ghcr.io/dev-redcube/betterhm-backend/cron:latest
+    env_file: .env
     networks:
       - betterhm-backend
 
   laravel.cli:
-    image: ghcr.io/dev-redcube/betterhm-backend/cli
-    command: php artisan migrate
+    image: ghcr.io/dev-redcube/betterhm-backend/cli:latest
+    env_file: .env
+    command: php artisan migrate --force && php artisan optimize:clear
     depends_on:
       mysql:
         condition: service_healthy
