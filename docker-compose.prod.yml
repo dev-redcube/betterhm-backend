@@ -4,7 +4,7 @@ services:
     image: ghcr.io/dev-redcube/betterhm-backend/fpm_server:latest
     env_file: .env
       # volumes:
-      # Here we mount in our codebase so any changes are immediately reflected into the container
+    # Here we mount in our codebase so any changes are immediately reflected into the container
     #   - '.:/opt/apps/betterhm-backend'
     networks:
       - betterhm-backend
