@@ -27,3 +27,8 @@ Route::prefix("/movies")->group(function () {
     Route::get("/", [MovieController::class, "index"]);
     Route::get("/{movie:title}", [MovieController::class, "show"]);
 });
+
+// Temporary for dates api
+Route::get("/dates-api/thisSemester/all.json", function () {
+    return response()->file(storage_path("app/static/dates.json"));
+});
