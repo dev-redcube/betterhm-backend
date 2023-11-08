@@ -1,0 +1,131 @@
+{
+    "semester_type": "Wintersemester 2023/24",
+    "events": [
+        {
+            "title": "Dauer des Semesters",
+            "dates": [
+                {
+                    "start": "2023-10-01T00:00:00",
+                    "end": "2024-03-14T23:59:59"
+                }
+            ],
+            "tag": "duration_of_semester"
+        },
+        {
+            "title": "Vorlesungszeit",
+            "dates": [
+                {
+                    "start": "2023-10-02T00:00:00",
+                    "end": "2024-01-25T23:59:59"
+                }
+            ],
+            "tag": "lecture_period"
+        },
+        {
+            "title": "Vorlesungsfreie Zeit",
+            "dates": [
+                {
+                    "start": "2023-12-23T00:00:00",
+                    "end": "2024-01-07T23:59:59"
+                },
+                {
+                    "start": "2024-01-26T00:00:00",
+                    "end": "2024-03-14T23:59:59"
+                }
+            ],
+            "tag": "lecture_free_time"
+        },
+        {
+            "title": "Pr\u00fcfungsanmeldung",
+            "dates": [
+                {
+                    "start": "2023-11-04T00:00:00",
+                    "end": "2023-11-14T23:59:59"
+                }
+            ],
+            "tag": "exam_registration"
+        },
+        {
+            "title": "Pr\u00fcfungszeitraum",
+            "dates": [
+                {
+                    "start": "2024-01-26T00:00:00",
+                    "end": null
+                }
+            ],
+            "tag": "exam_period_start"
+        },
+        {
+            "title": "Notenbekanntgabe",
+            "dates": [
+                {
+                    "start": "2024-02-14T00:00:00",
+                    "end": null
+                }
+            ],
+            "tag": "grades_release"
+        },
+        {
+            "title": "R\u00fcckmeldung",
+            "dates": [
+                {
+                    "start": "2024-01-15T00:00:00",
+                    "end": "2024-02-14T23:59:59"
+                }
+            ],
+            "tag": "re-registration_for_next_semester"
+        },
+        {
+            "title": "Belegung Online-Los-Durchgang I",
+            "dates": [
+                {
+                    "start": "2023-09-25T00:00:00",
+                    "end": "2023-10-03T23:59:59"
+                }
+            ],
+            "tag": "1-st_AW_subject_draw_lot"
+        },
+        {
+            "title": "Ergebnisse 1. Losdurchgang (nur online)",
+            "dates": [
+                {
+                    "start": "2023-10-04T00:00:00",
+                    "end": null
+                }
+            ],
+            "tag": null
+        },
+        {
+            "title": "Belegung Online Losdurchgang II",
+            "dates": [
+                {
+                    "start": "2023-10-04T00:00:00",
+                    "end": "2023-10-05T23:59:59"
+                }
+            ],
+            "tag": "2-st_AW_subject_draw_lot"
+        },
+        {
+            "title": "Ergebnisse 2. Losdurchgang (nur online)",
+            "dates": [
+                {
+                    "start": "2023-10-06T00:00:00",
+                    "end": null
+                }
+            ],
+            "tag": null
+        },
+        {
+            "title": "Vorlesungsbeginn AW-Lehrveranstaltungen",
+            "dates": [
+                {
+                    "start": "2023-10-09T00:00:00",
+                    "end": null
+                }
+            ],
+            "tag": "start_of_AW_lectures"
+        }
+    ],
+    "time_of_last_update": "2023-11-08T02:01:20.610485",
+    "recent_data": true
+}
