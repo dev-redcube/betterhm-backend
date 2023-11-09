@@ -30,5 +30,5 @@ Route::prefix("/movies")->group(function () {
 
 // Temporary for dates api
 Route::get("/dates-api/thisSemester/all.json", function () {
-    return response()->file(storage_path("app/static/dates.json"));
+    return response()->file(storage_path("app/public/static/dates.json"));
 });
