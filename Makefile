@@ -9,18 +9,14 @@ VERSION ?= latest
 # You may also change the default value if you are using a different registry as a default
 REGISTRY ?= ghcr.io/dev-redcube/betterhm-backend
 
+build:
+	docker build . --target cli -t ${REGISTRY}:${VERSION}
+	docker build . --target fpm_server -t ${REGISTRY}:${VERSION}
+	docker build . --target web_server -t ${REGISTRY}:${VERSION}
+	docker build . --target cron -t ${REGISTRY}:${VERSION}
 
-# Commands
-docker: docker-build docker-push
-
-docker-build:
-	docker buildx build . --target cli -t ${REGISTRY}/cli:${VERSION} --platform linux/amd64,linux/arm64
-	docker buildx build . --target fpm_server -t ${REGISTRY}/fpm_server:${VERSION} --platform linux/amd64,linux/arm64
-	docker buildx build . --target web_server -t ${REGISTRY}/web_server:${VERSION} --platform linux/amd64,linux/arm64
-	docker buildx build . --target cron -t ${REGISTRY}/cron:${VERSION} --platform linux/amd64,linux/arm64
-
-docker-push:
-	docker push ${REGISTRY}/cli:${VERSION}
-	docker push ${REGISTRY}/cron:${VERSION}
-	docker push ${REGISTRY}/fpm_server:${VERSION}
-	docker push ${REGISTRY}/web_server:${VERSION}
+buildx:
+	docker buildx build . --target cli -t ${REGISTRY}/cli:${VERSION} --platform linux/amd64,linux/arm64 --push
+	docker buildx build . --target fpm_server -t ${REGISTRY}/fpm_server:${VERSION} --platform linux/amd64,linux/arm64 --push
+	docker buildx build . --target web_server -t ${REGISTRY}/web_server:${VERSION} --platform linux/amd64,linux/arm64 --push
+	docker buildx build . --target cron -t ${REGISTRY}/cron:${VERSION} --platform linux/amd64,linux/arm64 --push
