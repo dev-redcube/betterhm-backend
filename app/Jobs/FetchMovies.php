@@ -46,7 +46,7 @@ class FetchMovies implements ShouldQueue
             $movie->date = $item["Termin_Datum"];
             $movie->fsk = $item["FSK"];
             $movie->genre = $item["Genre"];
-            $movie->runtime = $item["Laufzeit"];
+            $movie->length = $item["Laufzeit"];
             $movie->info = $item["Filminfo"];
             $movie->content = $item["Filminhalt"];
             $movie->coverUrl = $item["Img_Filmplakat"];

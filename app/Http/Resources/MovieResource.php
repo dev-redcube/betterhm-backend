@@ -12,7 +12,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property DateTime $date
  * @property string $fsk
  * @property string $genre
- * @property int $runtime
+ * @property int $length
  * @property string $info
  * @property string $content
  * @property string $coverUrl
@@ -35,7 +35,7 @@ class MovieResource extends JsonResource
             "times" =>  MovieTimeResource::collection($this->times),
             "fsk" => $this->fsk,
             "genre" => $this->genre,
-            "runtime" => $this->runtime,
+            "length" => $this->length,
             "info" => $this->info,
             "content" => $this->content,
             "coverUrl" => $this->coverUrl,

@@ -15,7 +15,7 @@ use Illuminate\Support\LazyCollection;
  * @property DateTime $date
  * @property string $fsk
  * @property string $genre
- * @property int $runtime
+ * @property int $length
  * @property string $info
  * @property string $content
  * @property string $coverUrl
@@ -34,7 +34,7 @@ class Movie extends Model
         "date",
         "fsk",
         "genre",
-        "runtime",
+        "length",
         "info",
         "content",
         "coverUrl",

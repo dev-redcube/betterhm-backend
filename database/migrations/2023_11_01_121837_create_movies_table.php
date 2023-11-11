@@ -17,7 +17,7 @@ return new class extends Migration
             $table->dateTime("date");
             $table->string("fsk");
             $table->string("genre");
-            $table->integer("runtime");
+            $table->integer("length");
             $table->text("info");
             $table->text("content");
             $table->string("coverUrl");
