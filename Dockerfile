@@ -24,8 +24,9 @@ WORKDIR /opt/apps/betterhm-backend
 RUN addgroup -S composer
 RUN adduser -S composer -G composer
 RUN chown -R composer /opt/apps/betterhm-backend
-RUN apk add --virtual build-dependencies --no-cache ${PHPIZE_DEPS} openssl ca-certificates libxml2-dev oniguruma-dev
+RUN apk add --virtual build-dependencies --no-cache ${PHPIZE_DEPS} openssl ca-certificates libxml2-dev oniguruma-dev libpng-dev libjpeg-turbo-dev zlib-dev
 RUN docker-php-ext-install -j$(nproc) ${PHP_EXTS}
+RUN install-php-extensions gd
 RUN pecl install ${PHP_PECL_EXTS}
 RUN docker-php-ext-enable ${PHP_PECL_EXTS}
 RUN apk del build-dependencies
@@ -62,7 +63,7 @@ RUN composer install --no-dev --prefer-dist
 # and run a production compile
 FROM node:lts as frontend
 
-# We need to copy in the Laravel files to make everything is available to our frontend compilation
+# We need to copy in the Laravel files to makeA everything is available to our frontend compilation
 COPY --from=composer_base /opt/apps/betterhm-backend /opt/apps/betterhm-backend
 
 WORKDIR /opt/apps/betterhm-backend
@@ -83,13 +84,17 @@ FROM php:8.2-alpine as cli
 ARG PHP_EXTS
 ARG PHP_PECL_EXTS
 
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+
 WORKDIR /opt/apps/betterhm-backend
 
 # We need to install some requirements into our image,
 # used to compile our PHP extensions, as well as install all the extensions themselves.
 # You can see a list of required extensions for Laravel here: https://laravel.com/docs/10.x/deployment#server-requirements
-RUN apk add --virtual build-dependencies --no-cache ${PHPIZE_DEPS} openssl ca-certificates libxml2-dev oniguruma-dev && \
+RUN apk add --virtual build-dependencies --no-cache ${PHPIZE_DEPS} openssl ca-certificates libxml2-dev oniguruma-dev libpng-dev libjpeg-turbo-dev zlib-dev && \
     docker-php-ext-install -j$(nproc) ${PHP_EXTS} && \
+    chmod +x /usr/local/bin/install-php-extensions && \
+    install-php-extensions gd && \
     pecl install ${PHP_PECL_EXTS} && \
     docker-php-ext-enable ${PHP_PECL_EXTS} && \
     apk del build-dependencies
@@ -105,13 +110,17 @@ FROM php:8.2-fpm-alpine as fpm_server
 ARG PHP_EXTS
 ARG PHP_PECL_EXTS
 
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+
 WORKDIR /opt/apps/betterhm-backend
 
-RUN apk add --virtual build-dependencies --no-cache ${PHPIZE_DEPS} openssl ca-certificates libxml2-dev oniguruma-dev && \
-    docker-php-ext-install -j$(nproc) ${PHP_EXTS} && \
-    pecl install ${PHP_PECL_EXTS} && \
-    docker-php-ext-enable ${PHP_PECL_EXTS} && \
-    apk del build-dependencies
+RUN apk add --virtual build-dependencies --no-cache ${PHPIZE_DEPS} openssl ca-certificates libxml2-dev oniguruma-dev libpng-dev libjpeg-turbo-dev zlib-dev
+RUN docker-php-ext-install -j$(nproc) ${PHP_EXTS}
+RUN chmod +x /usr/local/bin/install-php-extensions
+RUN install-php-extensions gd
+RUN pecl install ${PHP_PECL_EXTS}
+RUN docker-php-ext-enable ${PHP_PECL_EXTS}
+RUN apk del build-dependencies
 
 # As FPM uses the www-data user when running our application,
 # we need to make sure that we also use that user when starting up,
