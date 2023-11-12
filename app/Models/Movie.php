@@ -19,6 +19,7 @@ use Illuminate\Support\LazyCollection;
  * @property string $info
  * @property string $content
  * @property string $coverUrl
+ * @property string $coverBlurhash
  * @property string $trailerUrl
  * @property string $unifilmUrl
  *
@@ -38,6 +39,7 @@ class Movie extends Model
         "info",
         "content",
         "coverUrl",
+        "coverBlurhash",
         "trailerUrl",
         "unifilmUrl",
     ];

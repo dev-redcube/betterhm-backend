@@ -16,6 +16,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property string $info
  * @property string $content
  * @property string $coverUrl
+ * @property string $coverBlurhash
  * @property string $trailerUrl
  * @property string $unifilmUrl
  * @property mixed $times
@@ -39,6 +40,7 @@ class MovieResource extends JsonResource
             "info" => $this->info,
             "content" => $this->content,
             "coverUrl" => $this->coverUrl,
+            "coverBlurhash" => $this->coverBlurhash,
             "unifilmUrl" => $this->unifilmUrl,
         ];
     }

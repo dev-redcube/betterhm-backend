@@ -4,12 +4,13 @@ namespace App\Jobs;
 
 use App\Models\Movie;
 use App\Models\MovieTime;
+use Bepsvpt\Blurhash\Facades\BlurHash;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
@@ -74,8 +75,9 @@ class FetchMovies implements ShouldQueue
             }
             if (Storage::disk("public")->exists($path . $filename)) {
                 $movie->coverUrl = asset("storage/kino/covers/" . $filename);
-                $movie->save();
             }
+            $movie->coverBlurhash = BlurHash::encode(Storage::disk("public")->path($path . $filename));
+            $movie->save();
         }
     }
 }

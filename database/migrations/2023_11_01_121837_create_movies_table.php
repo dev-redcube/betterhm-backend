@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text("info");
             $table->text("content");
             $table->string("coverUrl");
+            $table->string("coverBlurhash")->nullable();
             $table->string("trailerUrl");
             $table->string("unifilmUrl");
         });
