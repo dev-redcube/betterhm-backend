@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Resources\MovieResource;
 use App\Models\Movie;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Cache;
 
 class MovieController extends Controller
 {
     public function index(): AnonymousResourceCollection
     {
-        return MovieResource::collection(Movie::all());
+        $movies = Cache::remember('movies', 3600, function () {
+            return Movie::with("times")->get();
+        });
+        return MovieResource::collection($movies);
     }
 
     public function show(Movie $movie): MovieResource

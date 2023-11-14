@@ -27,7 +27,13 @@ services:
   laravel.cli:
     image: ghcr.io/dev-redcube/betterhm-backend/cli:latest
     env_file: .env
-    command: php artisan migrate --force && php artisan optimize:clear
+    command: |
+      php artisan migrate --force &&
+      php artisan optimize:clear &&
+      php artisan config:cache &&
+      php artisan event:cache &&
+      php artisan route:cache &&
+      php artisan view:cache
     depends_on:
       mysql:
         condition: service_healthy

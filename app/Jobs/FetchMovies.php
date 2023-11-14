@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
@@ -79,5 +80,7 @@ class FetchMovies implements ShouldQueue
             $movie->coverBlurhash = BlurHash::encode(Storage::disk("public")->path($path . $filename));
             $movie->save();
         }
+
+        Cache::forget("movies");
     }
 }
