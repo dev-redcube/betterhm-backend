@@ -10,7 +10,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
@@ -50,6 +49,7 @@ class FetchMovies implements ShouldQueue
             $movie->length = $item["Laufzeit"];
             $movie->info = $item["Filminfo"];
             $movie->content = $item["Filminhalt"];
+            $movie->room = $item["Abw_Raum"] ?? $item["Allg_Raum"];
             $movie->coverUrl = $item["Img_Filmplakat"];
             $movie->trailerUrl = $item["URL_Trailer"];
             $movie->unifilmUrl = $item["MD5_Rand"];

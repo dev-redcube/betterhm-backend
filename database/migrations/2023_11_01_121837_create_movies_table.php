@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -20,6 +19,7 @@ return new class extends Migration
             $table->integer("length");
             $table->text("info");
             $table->text("content");
+            $table->string("room");
             $table->string("coverUrl");
             $table->string("coverBlurhash")->nullable();
             $table->string("trailerUrl");
