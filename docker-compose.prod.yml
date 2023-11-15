@@ -41,6 +41,7 @@ services:
       - betterhm-backend
 
   mysql:
+#     change to arm64v8/mysql:8.0 if on arm
     image: 'mysql:8.0'
     environment:
       MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
