@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\MovieController;
-use App\Http\Controllers\MvgController;
+use App\Http\Controllers\CalendarProviderController;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -11,32 +12,30 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
 |
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
 });
 
-Route::prefix("/mvg")->group(function () {
-    Route::get("/departures/{station}", [MvgController::class, "departures"])->where("station", "^de:\d+:\d+$");
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get("/calendarproviders", [CalendarProviderController::class, "index"])->name("calendarProviders");
 });
 
-Route::prefix("/movies")->group(function () {
-    Route::get("/", [MovieController::class, "index"]);
-    Route::get("/{movie:title}", [MovieController::class, "show"]);
-});
-
-Route::get("/events", [EventController::class, "index"]);
-Route::prefix("/events")->group(function () {
-    Route::get("/", [EventController::class, "ical"]);
-    Route::get("/ical", [EventController::class, "ical"]);
-    Route::get("/json", [EventController::class, "json"]);
-});
-
-// Temporary for dates api
-Route::get("/dates-api/thisSemester/all.json", function () {
-    return response()->file(storage_path("app/public/static/dates.json"));
-});
+require __DIR__ . '/auth.php';
