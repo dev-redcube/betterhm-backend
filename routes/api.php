@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CalendarProviderController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\MvgController;
@@ -45,3 +46,5 @@ Route::prefix("/events")->group(function () {
 Route::get("/dates-api/thisSemester/all.json", function () {
     return response()->file(storage_path("app/public/static/dates.json"));
 });
+
+Route::get("kalender", [CalendarProviderController::class, "all"]);
