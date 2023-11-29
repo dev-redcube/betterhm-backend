@@ -34,7 +34,7 @@ const showingNavigationDropdown = ref(false);
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('calendarProviders')" :active="route().current('calendarProviders')">
+                                <NavLink :href="route('calendarProviders.index')" :active="route().current('calendarProviders.index')">
                                     Kalender
                                 </NavLink>
                             </div>
@@ -122,7 +122,7 @@ const showingNavigationDropdown = ref(false);
                         </ResponsiveNavLink>
                     </div>
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('calendarProviders')" :active="route().current('calendarProviders')">
+                        <ResponsiveNavLink :href="route('calendarProviders.index')" :active="route().current('calendarProviders.index')">
                             Kalender
                         </ResponsiveNavLink>
                     </div>
