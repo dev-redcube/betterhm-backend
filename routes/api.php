@@ -47,4 +47,4 @@ Route::get("/dates-api/thisSemester/all.json", function () {
     return response()->file(storage_path("app/public/static/dates.json"));
 });
 
-Route::get("kalender", [CalendarProviderController::class, "all"]);
+Route::get("calendarProviders", [CalendarProviderController::class, "all"]);
