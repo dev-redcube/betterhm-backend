@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\CalendarproviderResource;
-use App\Models\CalendarProvider;
+use App\Http\Resources\CalendarLinkResource;
+use App\Models\CalendarLink;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,18 +12,18 @@ use Illuminate\Routing\Redirector;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class CalendarProviderController extends Controller
+class CalendarLinkController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render("CalendarProviders/Index", [
-            "calendarProviders" => CalendarProvider::all(),
+        return Inertia::render("CalendarLinks/Index", [
+            "links" => CalendarLink::all(),
         ]);
     }
 
     public function all(): AnonymousResourceCollection
     {
-        return CalendarproviderResource::collection(CalendarProvider::all());
+        return CalendarLinkResource::collection(CalendarLink::all());
     }
 
     public function store(Request $request): Application|Redirector|RedirectResponse|\Illuminate\Contracts\Foundation\Application
@@ -33,15 +33,15 @@ class CalendarProviderController extends Controller
             "url" => "url:http,https",
         ]);
 
-        CalendarProvider::create($validated);
+        CalendarLink::create($validated);
 
-        return redirect(route("calendarProviders.index"));
+        return redirect(route("calendarLinks.index"));
     }
 
-    public function destroy(CalendarProvider $calendarProvider): Application|Redirector|RedirectResponse|\Illuminate\Contracts\Foundation\Application
+    public function destroy(CalendarLink $calendarLink): Application|Redirector|RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
-        $calendarProvider->delete();
+        $calendarLink->delete();
 
-        return redirect(route("calendarProviders.index"));
+        return redirect(route("calendarLinks.index"));
     }
 }

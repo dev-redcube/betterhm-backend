@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @method static create(array $fillable)
  */
-class CalendarProvider extends Model
+class CalendarLink extends Model
 {
     use HasFactory;
 
