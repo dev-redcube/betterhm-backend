@@ -4,15 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Faculty;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class FacultyController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Response
     {
-        //
+        return Inertia::render("Admin/Faculties/Index", [
+            "faculties" => Faculty::all(),
+        ]);
     }
 
     /**
@@ -40,7 +44,7 @@ class FacultyController extends Controller
      */
     public function show(Faculty $faculty)
     {
-        //
+        return Inertia::render("Dashboard");
     }
 
     /**

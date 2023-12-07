@@ -3,6 +3,7 @@
 use App\Http\Controllers\CalendarLinkController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -38,6 +39,7 @@ Route::middleware('auth')->group(function () {
         ->only(["index", "store", "update", "destroy"]);
 
     Route::resource("faculties", FacultyController::class);
+    Route::resource("users", UserController::class);
 });
 
 require __DIR__ . '/auth.php';

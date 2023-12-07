@@ -13,36 +13,17 @@ const showingNavigationDropdown = ref(false);
 <template>
     <div>
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col">
-            <nav class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
-                <!-- Primary Navigation Menu -->
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex justify-between h-16">
-                        <div class="flex">
-                            <!-- Logo -->
-                            <div class="shrink-0 flex items-center">
-                                <Link :href="route('dashboard')">
-                                    <ApplicationLogo
-                                        class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"
-                                    />
-                                </Link>
-                            </div>
-
-                            <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
-                                </NavLink>
-                                <NavLink :href="route('calendarLinks.index')" :active="route().current('calendarLinks.index')">
-                                    Kalender
-                                </NavLink>
-                            </div>
-                        </div>
-
-                        <div class="hidden sm:flex sm:items-center sm:ms-6">
-                            <!-- Settings Dropdown -->
-                            <div class="ms-3 relative">
-                                <Dropdown align="right" width="48">
-                                    <template #trigger>
+            <header
+                class="flex flex-row justify-between items-center px-8 py-4 bg-white dark:bg-gray-800 shadow-b dark:border-b dark:border-gray-700">
+                <div class="shrink-0 flex items-center">
+                    <Link :href="route('dashboard')">
+                        <ApplicationLogo
+                            class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"
+                        />
+                    </Link>
+                </div>
+                <Dropdown align="right" width="48">
+                    <template #trigger>
                                         <span class="inline-flex rounded-md">
                                             <button
                                                 type="button"
@@ -64,90 +45,49 @@ const showingNavigationDropdown = ref(false);
                                                 </svg>
                                             </button>
                                         </span>
-                                    </template>
+                    </template>
 
-                                    <template #content>
-                                        <DropdownLink :href="route('profile.edit')"> Profile</DropdownLink>
-                                        <DropdownLink :href="route('logout')" method="post" as="button">
-                                            Log Out
-                                        </DropdownLink>
-                                    </template>
-                                </Dropdown>
-                            </div>
-                        </div>
+                    <template #content>
+                        <DropdownLink :href="route('profile.edit')"> Profile</DropdownLink>
+                        <DropdownLink :href="route('logout')" method="post" as="button">
+                            Log Out
+                        </DropdownLink>
+                    </template>
+                </Dropdown>
+            </header>
 
-                        <!-- Hamburger -->
-                        <div class="-me-2 flex items-center sm:hidden">
-                            <button
-                                @click="showingNavigationDropdown = !showingNavigationDropdown"
-                                class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"
-                            >
-                                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                    <path
-                                        :class="{
-                                            hidden: showingNavigationDropdown,
-                                            'inline-flex': !showingNavigationDropdown,
-                                        }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        :class="{
-                                            hidden: !showingNavigationDropdown,
-                                            'inline-flex': showingNavigationDropdown,
-                                        }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
+            <div class="flex flex-row">
+                <nav class="px-3 py-8 w-60 flex flex-col gap-8">
+                    <!-- Section -->
+
+                    <div>
+                        <h3 class="w-full flex items-start p-1 rounded text-left text-gray-500 focus:outline-none focus:ring focus:ring-primary-200 dark:focus:ring-gray-600">
+                            <span class="inline-block shrink-0 w-6 h-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
                                 </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Responsive Navigation Menu -->
-                <div
-                    :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
-                    class="sm:hidden"
-                >
-                    <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
-                        </ResponsiveNavLink>
-                    </div>
-                    <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('calendarLinks.index')" :active="route().current('calendarLinks.index')">
-                            Kalender
-                        </ResponsiveNavLink>
-                    </div>
-
-                    <!-- Responsive Settings Options -->
-                    <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-                        <div class="px-4">
-                            <div class="font-medium text-base text-gray-800 dark:text-gray-200">
-                                {{ $page.props.auth.user.name }}
+                            </span>
+                            <span class="flex-1 flex items-center w-full px-3 text-base">Admin</span>
+                        </h3>
+                        <div class="mt-1 flex flex-col">
+                            <div>
+                                <NavLink :href="route('faculties.index')" :active="route().current('faculties.*')">Fakultäten</NavLink>
                             </div>
-                            <div class="font-medium text-sm text-gray-500">{{ $page.props.auth.user.email }}</div>
-                        </div>
-
-                        <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')"> Profile</ResponsiveNavLink>
-                            <ResponsiveNavLink :href="route('logout')" method="post" as="button">
-                                Log Out
-                            </ResponsiveNavLink>
                         </div>
                     </div>
-                </div>
-            </nav>
 
-            <!-- Page Content -->
-            <main class="flex-1 flex flex-col">
-                <slot/>
-            </main>
+                    <NavLink :href="route('calendarLinks.index')" :active="route().current('calendarLinks.index')">
+                        Kalender
+                    </NavLink>
+                </nav>
+                <div class="flex-1 p-4 md:py-8 md:px-12 space-y-8">
+                    <slot/>
+                </div>
+            </div>
+
         </div>
     </div>
 </template>
