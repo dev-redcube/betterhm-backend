@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\CalendarProviderController;
+use App\Http\Controllers\CalendarLinkController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -34,7 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource("calendarProviders", CalendarProviderController::class)
+    Route::resource("calendarLinks", CalendarLinkController::class)
         ->only(["index", "store", "update", "destroy"]);
 
     Route::resource("faculties", FacultyController::class);

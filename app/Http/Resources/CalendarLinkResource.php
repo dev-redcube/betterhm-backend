@@ -10,7 +10,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property string $name
  * @property string $url
  */
-class CalendarproviderResource extends JsonResource
+class CalendarLinkResource extends JsonResource
 {
     /**
      * Transform the resource collection into an array.
