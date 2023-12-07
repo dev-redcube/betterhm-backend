@@ -1,14 +1,23 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head} from '@inertiajs/vue3';
+import SidebarLayout from "@/Layouts/SidebarLayout.vue";
+import SidebarLink from "@/Components/SidebarLink.vue";
 </script>
 
 <template>
     <Head title="Dashboard"/>
 
     <AuthenticatedLayout>
+        <SidebarLayout>
+
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard</h2>
+        </template>
+
+        <template #sidebar>
+            <SidebarLink href="#">Hello</SidebarLink>
+            <SidebarLink href="#" active>Another one</SidebarLink>
         </template>
 
         <div class="py-12">
@@ -18,5 +27,7 @@ import {Head} from '@inertiajs/vue3';
                 </div>
             </div>
         </div>
+
+        </SidebarLayout>
     </AuthenticatedLayout>
 </template>

@@ -12,7 +12,7 @@ const showingNavigationDropdown = ref(false);
 
 <template>
     <div>
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div class="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col">
             <nav class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -32,9 +32,8 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
-                            </div>
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('calendarProviders.index')" :active="route().current('calendarProviders.index')">
+                                <NavLink :href="route('calendarProviders.index')"
+                                         :active="route().current('calendarProviders.index')">
                                     Kalender
                                 </NavLink>
                             </div>
@@ -122,7 +121,8 @@ const showingNavigationDropdown = ref(false);
                         </ResponsiveNavLink>
                     </div>
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('calendarProviders.index')" :active="route().current('calendarProviders.index')">
+                        <ResponsiveNavLink :href="route('calendarProviders.index')"
+                                           :active="route().current('calendarProviders.index')">
                             Kalender
                         </ResponsiveNavLink>
                     </div>
@@ -146,15 +146,8 @@ const showingNavigationDropdown = ref(false);
                 </div>
             </nav>
 
-            <!-- Page Heading -->
-            <header class="bg-white dark:bg-gray-800 shadow" v-if="$slots.header">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <slot name="header"/>
-                </div>
-            </header>
-
             <!-- Page Content -->
-            <main>
+            <main class="flex-1 flex flex-col">
                 <slot/>
             </main>
         </div>

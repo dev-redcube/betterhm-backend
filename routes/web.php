@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CalendarProviderController;
+use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -21,8 +22,6 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
     ]);
 });
 
@@ -37,5 +36,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource("calendarProviders", CalendarProviderController::class)
         ->only(["index", "store", "update", "destroy"]);
+
+    Route::resource("faculties", FacultyController::class);
 });
+
 require __DIR__ . '/auth.php';

@@ -6,6 +6,7 @@ use App\Http\Controllers\MovieController;
 use App\Http\Controllers\MvgController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,9 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect("/", "/admin");
 
 Route::prefix("/mvg")->group(function () {
     Route::get("/departures/{station}", [MvgController::class, "departures"])->where("station", "^de:\d+:\d+$");
