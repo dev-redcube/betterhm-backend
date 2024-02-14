@@ -1,74 +1,24 @@
 version: '3.8'
 services:
-  laravel.fpm:
-    image: ghcr.io/dev-redcube/betterhm-backend/fpm_server:latest
-    env_file: .env
-    networks:
-      - betterhm-backend
-
-  # Run the web server container for static content, and proxying to our FPM container
-  laravel.web:
-    image: ghcr.io/dev-redcube/betterhm-backend/web_server:latest
-    env_file: .env
-    ports:
-      - '8080:80'
-    environment:
-      FPM_HOST: "laravel.fpm:9000"
-    networks:
-      - betterhm-backend
-
-  # Run the Laravel Scheduler
-  laravel.cron:
-    image: ghcr.io/dev-redcube/betterhm-backend/cron:latest
-    env_file: .env
-    networks:
-      - betterhm-backend
-
-  laravel.cli:
-    image: ghcr.io/dev-redcube/betterhm-backend/cli:latest
-    env_file: .env
-    command: |
-      php artisan migrate --force &&
-      php artisan optimize:clear &&
-      php artisan config:cache &&
-      php artisan event:cache &&
-      php artisan route:cache &&
-      php artisan view:cache
-    depends_on:
-      mysql:
-        condition: service_healthy
-    networks:
-      - betterhm-backend
-
   mysql:
-#     change to arm64v8/mysql:8.0 if on arm
     image: 'mysql:8.0'
+    ports:
+      - "127.0.0.1:3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-      MYSQL_DATABASE: '${DB_DATABASE}'
-      MYSQL_USER: '${DB_USERNAME}'
-      MYSQL_PASSWORD: '${DB_PASSWORD}'
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: 'laravel'
+      MYSQL_DATABASE: 'betterhm_backend'
     volumes:
-      - 'betterhm-backend-mysql:/var/lib/mysql'
-    networks:
-      - betterhm-backend
+      - './mysql-data:/var/lib/mysql'
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}" ]
+      test: [ "CMD", "mysqladmin", "ping", "-plaravel" ]
       retries: 3
       timeout: 5s
 
   redis:
     image: 'redis:alpine'
-    networks:
-      - betterhm-backend
+    ports:
+      - "127.0.0.1:6379:6379"
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       retries: 3
       timeout: 5s
-
-networks:
-  betterhm-backend:
-
-volumes:
-  betterhm-backend-mysql:
