@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
+use App\Http\Resources\CalendarCollection;
+use App\Models\Calendar;
 
 class CalendarController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(): CalendarCollection
     {
-        return response()->json([
-            [
-                "id" => "8f67ec3c-8729-4d26-9b8c-74038173680a",
-                "name" => "HM Fristen & Termine",
-                "url" => "https://betterhm.huber.cloud/events/ical"
-            ],
-        ]);
+        $fristenTermine = new Calendar();
+        $fristenTermine->id = "8f67ec3c-8729-4d26-9b8c-74038173680a";
+        $fristenTermine->name = "HM Fristen & Termine";
+        $fristenTermine->url = "https://betterhm.huber.cloud/events/ical";
+
+        return new CalendarCollection([$fristenTermine]);
     }
 }
