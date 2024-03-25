@@ -14,16 +14,17 @@ return new class extends Migration {
             $table->id();
             $table->string("title");
             $table->dateTime("date");
-            $table->string("fsk");
-            $table->string("genre");
+            $table->string("time");
+            $table->string("fsk")->nullable();
+            $table->string("genre")->nullable();
             $table->integer("length");
-            $table->text("info");
-            $table->text("content");
-            $table->string("room");
-            $table->string("coverUrl");
+            $table->text("info")->nullable();
+            $table->text("content")->nullable();
+            $table->string("room")->nullable();
+            $table->string("coverUrl")->nullable();
             $table->string("coverBlurhash")->nullable();
-            $table->string("trailerUrl");
-            $table->string("unifilmUrl");
+            $table->string("trailerUrl")->nullable();
+            $table->string("unifilmUrl")->nullable();
         });
     }
 

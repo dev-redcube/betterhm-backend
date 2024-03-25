@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Models\Movie;
-use App\Models\MovieTime;
 use Bepsvpt\Blurhash\Facades\BlurHash;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -36,15 +35,13 @@ class FetchMovies implements ShouldQueue
         $json = $response->json();
 
 //        DB::transaction(function () use ($json) {
-        Schema::disableForeignKeyConstraints();
-        MovieTime::truncate();
         Movie::truncate();
-        Schema::enableForeignKeyConstraints();
         collect($json)->each(function ($item) {
             $movie = new Movie();
 
             $movie->title = $item["Termin_Titel"];
             $movie->date = $item["Termin_Datum"];
+            $movie->time = str($item["Termin_Uhrzeit"])->matchAll("/\d{1,2}:\d{2}/")->first();
             $movie->fsk = $item["FSK"];
             $movie->genre = $item["Genre"];
             $movie->length = $item["Laufzeit"];
@@ -56,12 +53,6 @@ class FetchMovies implements ShouldQueue
             $movie->unifilmUrl = $item["MD5_Rand"];
 
             $movie->save();
-
-            str($item["Termin_Uhrzeit"])
-                ->matchAll("/\d{1,2}:\d{2}/")
-                ->each(function ($match) use ($movie) {
-                    $movie->times()->create(["time" => $match]);
-                });
         });
 //        });
 
@@ -72,12 +63,16 @@ class FetchMovies implements ShouldQueue
 
             if (Storage::disk("public")->missing($path . $filename)) {
                 $response = Http::get($coverUrl);
-                Storage::disk("public")->put($path . $filename, $response->body());
+                if ($response->status() == "200")
+                    Storage::disk("public")->put($path . $filename, $response->body());
             }
             if (Storage::disk("public")->exists($path . $filename)) {
                 $movie->coverUrl = asset("storage/kino/covers/" . $filename);
+                $movie->coverBlurhash = BlurHash::encode(Storage::disk("public")->path($path . $filename));
+            } else {
+                $movie->coverUrl = null;
             }
-            $movie->coverBlurhash = BlurHash::encode(Storage::disk("public")->path($path . $filename));
+
             $movie->save();
         }
 

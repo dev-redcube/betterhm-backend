@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\MovieTime;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -10,6 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @property string $title
  * @property DateTime $date
+ * @property string $time
  * @property string $fsk
  * @property string $genre
  * @property int $length
@@ -20,7 +20,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property string $coverBlurhash
  * @property string $trailerUrl
  * @property string $unifilmUrl
- * @property mixed $times
  */
 class MovieResource extends JsonResource
 {
@@ -34,7 +33,7 @@ class MovieResource extends JsonResource
         return [
             "title" => $this->title,
             "date" => $this->date->format("Y-m-d"),
-            "times" =>  MovieTimeResource::collection($this->times),
+            "time" =>  $this->time,
             "fsk" => $this->fsk,
             "genre" => $this->genre,
             "length" => $this->length,

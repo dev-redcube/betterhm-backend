@@ -13,6 +13,7 @@ use Illuminate\Support\LazyCollection;
  * @method static LazyCollection lazy()
  * @property string $title
  * @property DateTime $date
+ * @property string $time
  * @property string $fsk
  * @property string $genre
  * @property int $length
@@ -34,6 +35,7 @@ class Movie extends Model
     protected $fillable = [
         "title",
         "date",
+        "time",
         "fsk",
         "genre",
         "length",
@@ -49,9 +51,4 @@ class Movie extends Model
     protected $casts = [
         "date" => "datetime",
     ];
-
-    public function times(): HasMany
-    {
-        return $this->hasMany(MovieTime::class);
-    }
 }

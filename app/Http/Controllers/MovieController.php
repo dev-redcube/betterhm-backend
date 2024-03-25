@@ -12,7 +12,7 @@ class MovieController extends Controller
     public function index(): AnonymousResourceCollection
     {
         $movies = Cache::remember('movies', 3600, function () {
-            return Movie::with("times")->get();
+            return Movie::all();
         });
         return MovieResource::collection($movies);
     }
