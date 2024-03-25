@@ -6,12 +6,12 @@ use App\Models\Movie;
 use Bepsvpt\Blurhash\Facades\BlurHash;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 
 class FetchMovies implements ShouldQueue
@@ -31,11 +31,15 @@ class FetchMovies implements ShouldQueue
      */
     public function handle(): void
     {
+        $path = "kino/covers/";
         $response = Http::get("https://unifilm.eu/kinodateien/api/api_hs_muenchen.php");
         $json = $response->json();
 
 //        DB::transaction(function () use ($json) {
         Movie::truncate();
+
+        Storage::disk("public")->deleteDirectory($path);
+
         collect($json)->each(function ($item) {
             $movie = new Movie();
 
@@ -56,7 +60,6 @@ class FetchMovies implements ShouldQueue
         });
 //        });
 
-        $path = "kino/covers/";
         foreach (Movie::lazy() as $movie) {
             $coverUrl = $movie->coverUrl;
             $filename = collect(explode("/", $coverUrl))->last();
