@@ -14,6 +14,11 @@ class CalendarController extends Controller
         $fristenTermine->name = "Fakultät 10 Fristen & Termine";
         $fristenTermine->url = "https://calendar.google.com/calendar/ical/qp1nk83jvkfm7a3m9goqhr5oo4%40group.calendar.google.com/public/basic.ics";
 
-        return new CalendarCollection([$fristenTermine]);
+        $thunderbird = new Calendar();
+        $thunderbird->id = "870baf08-b182-4451-a1f5-657b8ef02852";
+        $thunderbird->name = "Thunderbird Feiertage";
+        $thunderbird->url = "https://www.thunderbird.net/media/caldata/GermanHolidays.ics";
+
+        return new CalendarCollection([$fristenTermine, $thunderbird]);
     }
 }
